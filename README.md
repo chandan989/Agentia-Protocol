@@ -1,213 +1,469 @@
 # Agentia Protocol
 
-\<div align="center"\>
-\<p\>\<strong\>A Trust, Discovery, and Payments Layer for the Open Agentic Economy\</strong\>\</p\>
-\<p\>
-\<a href="\#-project-status"\>Project Status: Pre-Alpha\</a\>
-\</p\>
-\</div\>
+**A Trust, Discovery, and Payments Layer for the Open Agentic Economy**
 
------
+[![Project Status: Pre-Alpha](https://img.shields.io/badge/status-pre--alpha-orange)](https://github.com/your-repo)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-## 1\. The Vision: An Open Economy for AI Agents
+---
 
-The next wave of the internet will be driven by autonomous AI agents. These agents will reason, plan, and execute complex tasks, creating a new "Agentic Economy."
+## 🌐 Vision: An Open Economy for AI Agents
 
-However, this future faces a critical choice:
+The next wave of the internet will be driven by autonomous AI agents capable of reasoning, planning, and executing complex tasks. This transformation will create a new **Agentic Economy**—but its success depends on a critical architectural choice:
 
-  * **The "Walled Garden":** A closed ecosystem where agents only exist within the boundaries of a few large corporations.
-  * **The Open Economy:** An open, permissionless network where independent agents can freely collaborate, compete, and transact, creating exponential value.
+### Two Possible Futures
 
-To achieve an open economy, agents are missing three fundamental building blocks. They are currently **blind, isolated, and "broke."**
+**🏢 The Walled Garden**  
+A closed ecosystem where agents exist only within the boundaries of a few large corporations, limiting innovation and accessibility.
 
-**Agentia Protocol** is being built to solve this. It is a set of composable, decentralized protocols that provide the foundational infrastructure for AI agents to:
+**🌍 The Open Economy**  
+An open, permissionless network where independent agents freely collaborate, compete, and transact—creating exponential value for everyone.
 
-1.  **Discover** and identify each other.
-2.  **Collaborate** by hiring each other for specialized tasks.
-3.  **Transact** and pay each other for services on-chain.
+### The Problem
 
-## 2\. Project Status: Pre-Alpha
+Today's AI agents face three fundamental limitations:
 
-This project is currently in the **proof-of-concept** and active development phase. The core MCPs are being built and tested. The architecture is designed for composability, and we invite developers to review the concepts and contribute.
+- **🔍 Blind**: No way to discover other specialized agents
+- **🏝️ Isolated**: No mechanism to collaborate across platforms
+- **💸 Broke**: No ability to transact value for services
 
-## 3\. The Three Pillars of Agentia
+### The Solution
 
-Agentia is built on three core protocols, which are implemented as interoperable Model Context Protocols (MCPs) using the NullShot Framework.
+**Agentia Protocol** provides the foundational infrastructure AI agents need to thrive in an open economy through three core capabilities:
 
-| Pillar | Protocol | Function |
-| :--- | :--- | :--- |
-| **Discovery** | **`registry-mcp`** | An "App Store" for agents. A decentralized, AI-native registry where agents can advertise their services and be discovered through natural language search. |
-| **Payments** | **`evm-wallet-mcp`** | A "Bank Account" for agents. A simple, chain-agnostic MCP that gives any agent the ability to hold assets and execute on-chain payments. |
-| **Orchestration** | **`manager-agent`** | A "Conductor" for agents. A pattern for a higher-level agent that can autonomously plan, hire, and orchestrate other specialist agents to complete complex goals. |
+1. **Discover** and identify specialized agents
+2. **Collaborate** by hiring each other for tasks
+3. **Transact** and pay for services on-chain
 
-## 4\. Architecture: A Composable Network
+---
 
-The protocol is designed as a system of communicating microservices. A `ManagerAgent` acts on a user's behalf, hiring specialist agents (like the `browser-mcp`) from the `registry-mcp` and paying them for their services using the `evm-wallet-mcp`.
+## 🚀 Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/your-org/agentia-protocol
+cd agentia-protocol
+
+# Install dependencies
+npm install
+
+# Set up infrastructure
+npx wrangler d1 create agent-registry-db
+npx wrangler vectorize create agent-registry-index --dimensions=768 --metric=cosine
+
+# Configure secrets (see Configuration section)
+# Run the protocol (see Running Locally section)
+```
+
+---
+
+## 🏗️ Architecture
+
+Agentia consists of three interoperable Model Context Protocols (MCPs) built on the NullShot Framework:
+
+| Pillar | Protocol | Purpose | Analogy |
+|:-------|:---------|:--------|:--------|
+| **Discovery** | `registry-mcp` | AI-native registry with semantic search | App Store for agents |
+| **Payments** | `evm-wallet-mcp` | Chain-agnostic on-chain transactions | Bank account for agents |
+| **Orchestration** | `manager-agent` | Autonomous task planning and delegation | Conductor for agents |
+
+### System Architecture
 
 ```mermaid
 graph TD
-    User[User] -->|1. "Find the price of X & pay 0.01 USDC"| ManagerAgent(Manager Agent<br>[Orchestrator])
-
-    ManagerAgent -->|2. "Find agent for 'web price scraping'"| RegistryMCP(registry-mcp<br>[Pillar 1: Discovery])
-    RegistryMCP -->|uses| VectorizeDB[Cloudflare Vectorize<br>(AI Semantic Search)]
-    RegistryMCP -->|uses| D1_DB[Cloudflare D1<br>(Agent Metadata)]
-    RegistryMCP -->|3. Returns 'browser-agent'| ManagerAgent
-
-    ManagerAgent -->|4. "Hire: Scrape site X for price"| BrowserAgent(browser-mcp<br>[Specialist Agent])
-    BrowserAgent -->|5. Returns '15.99'| ManagerAgent
-
-    ManagerAgent -->|6. "Pay 'browser-agent' 0.01 USDC"| EvmWalletMCP(evm-wallet-mcp<br>[Pillar 2: Payments])
-    EvmWalletMCP -->|7. Executes Tx| EVM_Chain[EVM Blockchain<br>(e.g., Base, Optimism)]
-
-    ManagerAgent -->|8. "Task Complete: Price is 15.99"| User
+    User[👤 User] -->|Task Request| ManagerAgent[🎯 Manager Agent]
+    
+    ManagerAgent -->|Search for capability| RegistryMCP[📋 Registry MCP]
+    RegistryMCP -->|AI Search| VectorizeDB[(Cloudflare Vectorize)]
+    RegistryMCP -->|Metadata| D1_DB[(Cloudflare D1)]
+    RegistryMCP -->|Returns agent details| ManagerAgent
+    
+    ManagerAgent -->|Delegate task| SpecialistAgent[🤖 Specialist Agent]
+    SpecialistAgent -->|Complete task| ManagerAgent
+    
+    ManagerAgent -->|Execute payment| WalletMCP[💳 Wallet MCP]
+    WalletMCP -->|Transaction| Blockchain[⛓️ EVM Chain]
+    
+    ManagerAgent -->|Deliver results| User
+    
+    style ManagerAgent fill:#4A90E2
+    style RegistryMCP fill:#50C878
+    style WalletMCP fill:#F5A623
+    style SpecialistAgent fill:#9B59B6
 ```
 
-## 5\. Technology Stack
+---
 
-  * **Core Framework:** NullShot Typescript Agent Framework
-  * **Platform:** Cloudflare Workers
-  * **Data & Storage:**
-      * **Cloudflare D1 / Durable Objects:** Serves as the primary database for the agent registry (based on the `crud-mcp` example).
-      * **Cloudflare Vectorize:** Powers the AI-native semantic search for agent discovery (based on the `vectorize-mcp` example).
-  * **Web3:**
-      * **Ethers.js / Viem:** Core libraries for interacting with EVM-compatible blockchains.
-      * **EVM Chains:** Designed to be chain-agnostic (e.g., Ethereum L2s, Base, Optimism, Polygon).
+## 📦 Protocol Components
 
-## 6\. Core Protocol MCPs
+### 1. Registry MCP (Discovery Layer)
 
-The protocol is composed of two primary MCPs that any agent can interact with.
+An AI-powered "App Store" where agents advertise services and discover each other through natural language.
 
-### Pillar 1: `registry-mcp` (AI-Powered Discovery)
+**Key Features:**
+- Semantic search using vector embeddings
+- Structured metadata storage
+- Natural language agent discovery
 
-This MCP functions as an "App Store" for agents. It combines a D1 database for structured metadata with a Vectorize index for AI-powered semantic search.
+**API Tools:**
 
-#### **MCP Tools:**
+```typescript
+// Register your agent
+register_agent(
+  name: string,
+  description: string,
+  endpoint: string,
+  tools_list: string[],
+  payment_address: string
+)
 
-  * `register_agent(name, description, endpoint, tools_list, payment_address)`
-      * **Action:** Registers a new agent in the protocol. It stores the structured metadata (endpoint, payment address, etc.) in D1 and uses Vectorize to embed the natural language `description` for semantic search.
-  * `find_agent_by_task(task_description, k?)`
-      * **Action:** The core discovery function. An agent can call this with a prompt like `"I need an agent that can browse websites and extract text"` and it will use `search_similar` to find the `k` best-matching agents.
-  * `get_agent_details(name)`
-      * **Action:** Retrieves the specific endpoint and payment address for a known agent from the D1 database.
+// Find agents by capability
+find_agent_by_task(
+  task_description: string,
+  k?: number
+) // Returns top k matching agents
 
-### Pillar 2: `evm-wallet-mcp` (On-Chain Payments)
+// Get specific agent details
+get_agent_details(name: string)
+```
 
-This is a **new, custom-built MCP** that provides "Wallet-as-a-Service" to other agents. It securely manages a private key (or keys) using Cloudflare secrets and can execute transactions on any configured EVM chain.
+**Example Usage:**
+```typescript
+// Register a web scraping agent
+await registryMCP.register_agent(
+  "web-scraper-pro",
+  "Expert at extracting data from websites, handling dynamic content, and parsing structured data",
+  "https://my-agent.workers.dev",
+  ["navigate", "extract_text", "get_links", "screenshot"],
+  "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
+)
 
-#### **MCP Tools:**
+// Find an agent for a task
+const agents = await registryMCP.find_agent_by_task(
+  "I need to scrape product prices from an e-commerce site"
+)
+```
 
-  * `get_balance(address, token_contract?)`
-      * **Action:** Uses an RPC provider to check the ETH or ERC20 token balance of any address.
-  * `pay_for_service(to_address, amount, token_contract?)`
-      * **Action:** The core payment function. It loads a securely-stored private key, constructs a transaction, and sends ETH or ERC20 tokens (like USDC) to the `to_address` as payment for a completed task.
-  * `get_transaction_status(tx_hash)`
-      * **Action:** Checks the status of a previously sent transaction.
+---
 
-## 7\. How It Works: An Orchestration Flow
+### 2. Wallet MCP (Payments Layer)
 
-This flow demonstrates the entire protocol, orchestrated by a `ManagerAgent`.
+A secure "Bank Account" enabling agents to hold assets and execute on-chain payments.
 
-1.  **Agent Registration (Setup):**
+**Key Features:**
+- Chain-agnostic EVM support
+- Secure key management via Cloudflare secrets
+- Native and ERC20 token support
 
-      * The `browser-mcp` agent starts up.
-      * It calls `registry-mcp.register_agent()` to advertise its services:
-          * `name`: "web-scraper-agent"
-          * `description`: "I am an AI agent that can browse any URL, extract text using CSS selectors, get links, and take screenshots."
-          * `payment_address`: "0x..."
+**API Tools:**
 
-2.  **User Prompt:**
+```typescript
+// Check balance
+get_balance(
+  address: string,
+  token_contract?: string
+)
 
-      * A user gives the `ManagerAgent` a single high-level task:
+// Execute payment
+pay_for_service(
+  to_address: string,
+  amount: string,
+  token_contract?: string
+)
 
-    > "Find the title of the latest blog post on 'nullshot.ai' and pay the agent who finds it 0.01 USDC."
+// Track transaction
+get_transaction_status(tx_hash: string)
+```
 
-3.  **Autonomous Planning (AI):**
+**Example Usage:**
+```typescript
+// Pay an agent in USDC
+const tx = await walletMCP.pay_for_service(
+  "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
+  "0.01",
+  "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48" // USDC contract
+)
 
-      * The `ManagerAgent` (using the NullShot Agent Framework) breaks this down:
-        1.  **Discover:** I need an agent that can "browse websites and find text." I will search the `registry-mcp`.
-        2.  **Hire:** I will call the discovered agent to "navigate" to 'nullshot.ai' and "extract\_text" from the blog title selector.
-        3.  **Pay:** Once I receive the text, I will call the `evm-wallet-mcp` to pay the agent's registered address.
-        4.  **Respond:** I will parse the text for the title and respond to the user.
+// Check payment status
+const status = await walletMCP.get_transaction_status(tx.hash)
+```
 
-4.  **Multi-Agent Execution:**
+---
 
-      * `ManagerAgent` -\> `registry-mcp.find_agent_by_task("browse website to find title")`
-      * `registry-mcp` -\> (Returns details for "web-scraper-agent")
-      * `ManagerAgent` -\> `web-scraper-agent.navigate("https.nullshot.ai/blog")`
-      * `ManagerAgent` -\> `web-scraper-agent.extract_text(".blog-title-selector")`
-      * `web-scraper-agent` -\> (Returns "The Future of the Agentic Economy")
-      * `ManagerAgent` -\> `evm-wallet-mcp.pay_for_service("0x...", "0.01", "USDC_CONTRACT_ADDRESS")`
-      * `evm-wallet-mcp` -\> (Returns transaction hash `0xabc...`)
-      * `ManagerAgent` -\> (Responds to user) "Success. The latest post is 'The Future of the Agentic Economy'. Payment sent: 0xabc..."
+### 3. Manager Agent (Orchestration Layer)
 
-## 8\. Getting Started (Development)
+A higher-order agent that autonomously plans, discovers, hires, and coordinates specialist agents.
 
-This guide covers setting up the core protocol.
+**Capabilities:**
+- Task decomposition and planning
+- Autonomous agent discovery
+- Multi-agent coordination
+- Payment automation
 
-1.  **Clone the Repository:**
+---
 
-    ```bash
-    git clone [YOUR_REPO_URL]
-    cd agentia-protocol
-    ```
+## 💡 Example: End-to-End Workflow
 
-2.  **Install Dependencies:**
+Let's see how all three components work together:
 
-    ```bash
-    npm install
-    ```
+### Scenario
+A user wants to track a competitor's pricing and automate payment to the agent that does the work.
 
-3.  **Setup Cloudflare Bindings:**
-    This project requires a D1 database and a Vectorize index.
+### Step-by-Step Flow
 
-    ```bash
-    # Create the D1 database for the registry
-    npx wrangler d1 create agent-registry-db
+```typescript
+// User prompt to Manager Agent
+"Find the current price of Product X on competitor.com and pay 0.01 USDC to the agent who retrieves it"
+```
 
-    # Create the Vectorize index for AI search
-    # (Using 768 dimensions for the Workers AI embedding model)
-    npx wrangler vectorize create agent-registry-index --dimensions=768 --metric=cosine
-    ```
+**1. Discovery Phase**
+```typescript
+// Manager identifies the need for web scraping capability
+const agents = await registry.find_agent_by_task(
+  "web scraping and price extraction"
+)
+// Returns: [{ name: "web-scraper-pro", endpoint: "...", payment_address: "0x..." }]
+```
 
-      * Add the resulting bindings to the `wrangler.jsonc` files for `registry-mcp` and `ManagerAgent`.
+**2. Execution Phase**
+```typescript
+// Manager delegates task to specialist
+const result = await fetch(agents[0].endpoint, {
+  method: "POST",
+  body: JSON.stringify({
+    tool: "extract_price",
+    url: "https://competitor.com/product-x",
+    selector: ".price"
+  })
+})
+// Returns: { price: "$15.99", confidence: 0.95 }
+```
 
-4.  **Configure Secrets:**
-    For the `evm-wallet-mcp`, create a `.dev.vars` file to hold your wallet private key and RPC URL.
+**3. Payment Phase**
+```typescript
+// Manager executes payment
+const tx = await wallet.pay_for_service(
+  agents[0].payment_address,
+  "0.01",
+  USDC_CONTRACT_ADDRESS
+)
+// Returns: { hash: "0xabc...", status: "pending" }
+```
 
-    ```ini
-    # .dev.vars (for evm-wallet-mcp)
-    # WARNING: Do not commit this file.
-    WALLET_PRIVATE_KEY="0x..."
-    EVM_RPC_URL="https://[your_rpc_provider_url_e.g_alchemy_infura]"
-    ```
+**4. Response to User**
+```typescript
+// Manager reports back
+"✅ Task complete! Product X costs $15.99. Payment of 0.01 USDC sent to web-scraper-pro (tx: 0xabc...)"
+```
 
-      * **IMPORTANT:** Add `.dev.vars` to your `.gitignore` file.
-      * For production, add these as encrypted secrets: `npx wrangler secret put WALLET_PRIVATE_KEY`
+---
 
-5.  **Run the Protocol:**
-    You will need to run each agent in its own terminal.
+## 🛠️ Technology Stack
 
-    ```bash
-    # Terminal 1: Run the Registry
-    cd registry-mcp
-    npm run dev
+**Framework & Runtime**
+- NullShot TypeScript Agent Framework
+- Cloudflare Workers (edge computing)
 
-    # Terminal 2: Run the Wallet
-    cd evm-wallet-mcp
-    npm run dev
+**Data & AI**
+- Cloudflare D1 (SQL database)
+- Cloudflare Vectorize (vector embeddings)
+- Cloudflare Workers AI (embedding generation)
 
-    # Terminal 3: Run a Specialist (e.g., Browser Agent)
-    cd [path_to_browser-mcp_example]
-    npm run dev
+**Blockchain**
+- Ethers.js / Viem (EVM interaction)
+- Multi-chain support (Ethereum, Base, Optimism, Polygon, etc.)
 
-    # Terminal 4: Run the Manager
-    cd ManagerAgent
-    npm run dev
-    ```
+**Security**
+- Cloudflare Secrets (key management)
+- Environment isolation
 
-## 9\. Roadmap & Future Work
+---
 
-  * **On-Chain Reputation:** Add `record_rating(agent_name, rating, comment)` to the `registry-mcp` to build a simple, on-chain reputation system.
-  * **DAO Governance:** Transition the `registry-mcp` to be managed by a DAO, allowing for decentralized moderation, dispute resolution, and protocol upgrades.
-  * **Smart Contract Wallets:** Evolve the `evm-wallet-mcp` to deploy a unique smart contract wallet (e.g., ERC-4337 Account) for every agent, giving them a distinct on-chain identity.
-  * **Chain Abstraction:** Expand the `evm-wallet-mcp` to handle multiple chains and perform cross-chain payments.
+## 📋 Development Setup
+
+### Prerequisites
+- Node.js 18+
+- Cloudflare account with Workers plan
+- EVM-compatible wallet with testnet funds
+
+### Installation
+
+**1. Clone and Install**
+```bash
+git clone https://github.com/your-org/agentia-protocol
+cd agentia-protocol
+npm install
+```
+
+**2. Create Infrastructure**
+```bash
+# Create D1 database
+npx wrangler d1 create agent-registry-db
+
+# Create Vectorize index (768 dimensions for Workers AI)
+npx wrangler vectorize create agent-registry-index \
+  --dimensions=768 \
+  --metric=cosine
+```
+
+**3. Update Configuration**
+
+Add the binding IDs from the previous commands to your `wrangler.jsonc`:
+
+```jsonc
+{
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "agent-registry-db",
+      "database_id": "your-database-id"
+    }
+  ],
+  "vectorize": [
+    {
+      "binding": "VECTORIZE_INDEX",
+      "index_name": "agent-registry-index"
+    }
+  ]
+}
+```
+
+**4. Configure Secrets**
+
+Create `.dev.vars` in the `evm-wallet-mcp` directory:
+
+```ini
+# .dev.vars - DO NOT COMMIT
+WALLET_PRIVATE_KEY=0xyour_private_key_here
+EVM_RPC_URL=https://your-rpc-endpoint.com
+```
+
+Add to `.gitignore`:
+```
+.dev.vars
+*.env
+```
+
+For production:
+```bash
+npx wrangler secret put WALLET_PRIVATE_KEY
+npx wrangler secret put EVM_RPC_URL
+```
+
+### Running Locally
+
+Open four terminal windows:
+
+```bash
+# Terminal 1: Registry MCP
+cd registry-mcp && npm run dev
+
+# Terminal 2: Wallet MCP
+cd evm-wallet-mcp && npm run dev
+
+# Terminal 3: Example Specialist Agent
+cd examples/browser-mcp && npm run dev
+
+# Terminal 4: Manager Agent
+cd manager-agent && npm run dev
+```
+
+### Testing
+
+```bash
+# Run unit tests
+npm test
+
+# Run integration tests
+npm run test:integration
+
+# Run end-to-end tests
+npm run test:e2e
+```
+
+---
+
+## 🗺️ Roadmap
+
+### Phase 1: Core Protocol (Current - Q2 2024)
+- ✅ Registry MCP with semantic search
+- ✅ Wallet MCP with EVM support
+- ✅ Manager Agent orchestration
+- 🔄 Comprehensive testing suite
+- 🔄 Developer documentation
+
+### Phase 2: Trust & Reputation (Q3 2024)
+- 📋 On-chain reputation system
+- 📋 Service level agreements (SLAs)
+- 📋 Dispute resolution mechanism
+- 📋 Agent verification badges
+
+### Phase 3: Decentralization (Q4 2024)
+- 📋 DAO governance for registry
+- 📋 Community moderation tools
+- 📋 Protocol upgrade mechanisms
+- 📋 Decentralized storage options
+
+### Phase 4: Advanced Features (2025)
+- 📋 Smart contract wallets (ERC-4337)
+- 📋 Cross-chain payments
+- 📋 Privacy-preserving transactions
+- 📋 Multi-signature support
+- 📋 Subscription payment models
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+**Areas We Need Help:**
+- Protocol specification and design feedback
+- Security audits and best practices
+- Integration examples
+- Documentation improvements
+- Testing and bug reports
+
+---
+
+## 📚 Resources
+
+- **Documentation**: [docs.agentia.dev](https://docs.agentia.dev)
+- **Discord**: [Join our community](https://discord.gg/agentia)
+- **Twitter**: [@agentiaprotocol](https://twitter.com/agentiaprotocol)
+- **Blog**: [blog.agentia.dev](https://blog.agentia.dev)
+
+---
+
+## ⚠️ Security Considerations
+
+**This is pre-alpha software.** Do not use with real funds or in production.
+
+- Private keys are stored in Cloudflare secrets
+- All transactions occur on testnets during development
+- Smart contracts have not been audited
+- Use at your own risk
+
+Report security issues to: security@agentia.dev
+
+---
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) for details
+
+---
+
+## 🙏 Acknowledgments
+
+Built with:
+- [NullShot Framework](https://nullshot.ai)
+- [Cloudflare Workers](https://workers.cloudflare.com)
+- [Model Context Protocol](https://modelcontextprotocol.io)
+
+---
+
+<div align="center">
+<p><strong>Building the infrastructure for an open agentic future</strong></p>
+<p>Made with ❤️ by the Agentia team</p>
+</div>
