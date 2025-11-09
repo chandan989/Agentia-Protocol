@@ -1,6 +1,7 @@
 <div align="center">
 
-# 🤖 Agentia Protocol
+# Agentia Protocol
+<img src="logo.svg" alt="Agentia Protocol Logo" width="100"/>
 
 ### *A Trust, Discovery, and Payments Layer for the Open Agentic Economy*
 
