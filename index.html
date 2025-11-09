@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agentia Protocol - Autonomous AI Orchestration</title>
+    <link rel="icon" href="logo.svg" type="image/svg+xml">
 
     <!-- 1. Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -81,11 +82,17 @@
     <!-- Header / Navigation -->
     <header class="w-full border-b border-border-faint sticky top-0 bg-canvas/95 backdrop-blur-sm z-50">
         <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+            <div class="relative flex justify-between items-center h-16">
                 <!-- Logo (Technical Font) -->
                 <div class="font-mono font-bold text-lg text-ink-primary tracking-wider">
                     AGENTIA PROTOCOL
                 </div>
+
+                <!-- Centered Logo -->
+                <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <img src="logo.svg" alt="Agentia Protocol Logo" class="h-8">
+                </div>
+
                 <!-- Primary Action -->
                 <a href="#" class="bg-primary text-ink-primary uppercase font-bold px-5 py-2 rounded-sm text-xs tracking-wide hover:shadow-green-glow transition-all duration-200">
                     [ LAUNCH APP ]
@@ -372,8 +379,7 @@ pay_for_service("0x...", "0.01", "USDC_CONTRACT_ADDRESS")
                     </div>
                     <div>
                         <h3 class="font-mono text-lg text-ink-primary tracking-wide">[ WEB3 ]</h3>
-                        <p class="font-sans text-ink-secondary text-base mt-2">Ethers.js / Viem (EVM Interaction)<br>EVM L2s (Base, Optimism, Polygon)</p>
-                    </div>
+                        <p class="font-sans text-ink-secondary text-base mt-2">Ethers.js / Viem (EVM Interaction)<br>EVM L2s (Base, Optimism, Polygon)</p>                    </div>
                 </div>
             </div>
         </section>
