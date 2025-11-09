@@ -1,9 +1,3 @@
-Here is a more professional, vision-oriented README for your project.
-
-This version frames it as a standalone, in-development protocol, removes any mention of the hackathon, and focuses on the long-term vision and technical architecture.
-
------
-
 # Agentia Protocol
 
 \<div align="center"\>
