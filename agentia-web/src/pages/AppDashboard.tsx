@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Activity, CreditCard, Cpu, Terminal, Shield, Zap, Clock, MoreHorizontal } from 'lucide-react';
+import { Activity, CreditCard, Cpu, Shield, Zap, Clock, MoreHorizontal } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { TerminalLog } from '../components/shared/TerminalLog';
 import { TransactionItem } from '../components/shared/TransactionItem';
