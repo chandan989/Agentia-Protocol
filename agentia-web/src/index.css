@@ -9,7 +9,12 @@
     @apply bg-canvas text-ink-primary font-sans antialiased;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-sans font-bold tracking-tight;
   }
 
@@ -36,7 +41,7 @@
   .btn-secondary {
     @apply bg-canvas text-ink-primary px-4 py-2 font-mono text-sm font-medium border border-ink-primary hover:bg-gray-50 transition-all duration-200 active:transform active:scale-95 flex items-center justify-center gap-2;
   }
-  
+
   .btn-ghost {
     @apply bg-transparent text-ink-primary px-4 py-2 font-mono text-sm font-medium hover:bg-gray-100 transition-all duration-200 flex items-center justify-center gap-2;
   }
@@ -44,8 +49,46 @@
   .card {
     @apply bg-canvas border border-border-faint p-6 hover:border-primary transition-colors duration-300;
   }
-  
+
   .terminal-text {
     @apply font-mono text-sm;
+  }
+
+  @keyframes progress {
+    0% {
+      width: 0%;
+    }
+
+    100% {
+      width: 100%;
+    }
+  }
+
+  .animate-progress {
+    animation: progress 2s ease-in-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
   }
 }

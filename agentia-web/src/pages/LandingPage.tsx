@@ -15,54 +15,122 @@ export const LandingPage: React.FC = () => {
         '<span class="text-ink-secondary">[10:42:31] EVM-MCP:</span> <span class="text-ink-primary">Payment 0.01 USDC sent. Tx: 0xabc...123</span>',
     ];
 
+    const [loadingText, setLoadingText] = useState('INITIALIZING CORE SYSTEMS...');
+    const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
+        const texts = [
+            'INITIALIZING CORE SYSTEMS...',
+            'CONNECTING TO AGENTIA MESH...',
+            'VERIFYING CRYPTOGRAPHIC PROOFS...',
+            'SYNCING AGENT REGISTRY...',
+            'ESTABLISHING SECURE UPLINK...'
+        ];
+        let i = 0;
+        const textInterval = setInterval(() => {
+            i = (i + 1) % texts.length;
+            setLoadingText(texts[i]);
+        }, 400);
+
+        const timer = setTimeout(() => {
+            clearInterval(textInterval);
+            setIsLoading(false);
+        }, 2500);
+        return () => {
+            clearTimeout(timer);
+            clearInterval(textInterval);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (isLoading) return;
+
         const timers = terminalLines.map((_, i) =>
             setTimeout(() => {
                 setLines(prev => [...prev, terminalLines[i]]);
             }, (i + 1) * 400)
         );
         return () => timers.forEach(clearTimeout);
-    }, []);
+    }, [isLoading]);
 
 
     return (
         <div className="bg-canvas text-ink-primary font-sans antialiased">
-            <main>
+            {/* Splash Screen */}
+            {isLoading && (
+                <div className="fixed inset-0 z-50 bg-canvas flex flex-col items-center justify-center">
+                    <div className="w-full max-w-md px-4">
+                        <div className="flex justify-center mb-8">
+                            <img src="/logo.svg" alt="Agentia Protocol" className="h-20 w-auto animate-pulse" />
+                        </div>
+                        <div className="flex justify-between items-end mb-2">
+                            <span className="font-mono text-primary text-xs tracking-widest">AGENTIA_PROTOCOL_V1.0</span>
+                            <span className="font-mono text-ink-secondary text-xs">SYSTEM_CHECK</span>
+                        </div>
+                        <div className="w-full h-1 bg-surface border border-border-faint rounded-full overflow-hidden mb-4">
+                            <div className="h-full bg-black animate-progress"></div>
+                        </div>
+                        <div className="font-mono text-sm text-ink-primary flex justify-between items-center">
+                            <span>{loadingText}</span>
+                            <span className="animate-pulse text-primary">_</span>
+                        </div>
+                        <div className="mt-8 grid grid-cols-4 gap-1 opacity-30">
+                            {[...Array(16)].map((_, i) => (
+                                <div key={i} className="h-1 bg-primary rounded-full animate-pulse" style={{ animationDelay: `${i * 100}ms` }}></div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <main className={isLoading ? 'opacity-0' : 'opacity-100 transition-opacity duration-700'}>
                 {/* Hero Section */}
-                <section className="py-24 sm:py-32">
-                    <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <section className="min-h-screen flex flex-col justify-center py-24 sm:py-32 relative overflow-hidden">
+                    <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+                        <div className="flex flex-col items-center gap-12 text-center">
                             {/* Hero Text Content */}
-                            <div>
-                                <h1 className="font-sans font-black text-5xl sm:text-6xl text-ink-primary tracking-tighter">
-                                    A Trust, Discovery, and Payments Layer for the Open Agentic Economy.
+                            <div className="opacity-0 animate-fade-in-up max-w-4xl mx-auto">
+                                <h1 className="font-sans font-black text-5xl sm:text-7xl text-ink-primary tracking-tighter mb-6">
+                                    A Trust, Discovery, and Payments Layer for the <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-green-400">Open Agentic Economy</span>.
                                 </h1>
-                                <p className="mt-6 text-lg text-ink-secondary max-w-lg">
+                                <p className="mt-6 text-xl text-ink-secondary max-w-2xl mx-auto leading-relaxed">
                                     Agentia Protocol provides the foundational infrastructure for AI agents to Discover, Collaborate, and Transact in an open, permissionless network.
                                 </p>
-                                <div className="mt-10 flex flex-col sm:flex-row gap-4">
-                                    <Link to="/app" className="bg-primary text-ink-primary uppercase font-bold px-6 py-3 rounded-sm text-sm tracking-wide text-center hover:shadow-green-glow transition-all duration-200">
+                                <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+                                    <Link to="/app" className="bg-primary text-ink-primary uppercase font-bold px-8 py-4 rounded-sm text-sm tracking-wide text-center hover:shadow-green-glow hover:scale-105 transition-all duration-200">
                                         [ START BUILDING ]
                                     </Link>
-                                    <a href="/docs" className="bg-canvas text-ink-primary uppercase font-bold px-6 py-3 rounded-sm text-sm tracking-wide border border-ink-primary text-center hover:border-primary hover:text-primary transition-all duration-200">
+                                    <a href="/docs" className="bg-canvas text-ink-primary uppercase font-bold px-8 py-4 rounded-sm text-sm tracking-wide border border-ink-primary text-center hover:border-primary hover:text-primary hover:scale-105 transition-all duration-200">
                                         [ VIEW DOCS ]
                                     </a>
                                 </div>
                             </div>
 
                             {/* Hero Visual */}
-                            <div className="bg-surface border border-border-faint rounded-md p-4 sm:p-6 font-mono text-xs sm:text-sm h-[400px] overflow-y-auto shadow-lg flex flex-col">
-                                <div className="flex-grow">
-                                    {lines.map((line, index) => (
-                                        <p key={index} className="mt-1" dangerouslySetInnerHTML={{ __html: line }} />
-                                    ))}
+                            <div className="w-full max-w-3xl bg-surface border border-border-faint rounded-md p-4 sm:p-6 font-mono text-xs sm:text-sm h-[400px] overflow-y-auto shadow-2xl flex flex-col opacity-0 animate-fade-in-up animation-delay-400 text-left">
+                                <div className="flex items-center gap-2 mb-4 border-b border-border-faint pb-2">
+                                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                                    <span className="ml-2 text-ink-secondary text-xs">agentia-terminal — -zsh — 80x24</span>
                                 </div>
-                                <p className="mt-4 flex items-center">
-                                    <span className="text-primary font-bold">&gt;</span>
-                                    <span className="inline-block bg-primary w-2 h-5 translate-y-1 ml-1 animate-blink"></span>
-                                </p>
+                                <div className="flex-grow font-mono">
+                                    {lines.map((line, index) => (
+                                        <p key={index} className="mt-1 break-words" dangerouslySetInnerHTML={{ __html: line }} />
+                                    ))}
+                                    <p className="mt-1 flex items-center">
+                                        <span className="text-primary font-bold mr-2">&gt;</span>
+                                        <span className="inline-block bg-primary w-2 h-5 animate-blink"></span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
+                    </div>
+
+                    {/* Background Elements */}
+                    <div className="absolute inset-0 pointer-events-none">
+                        <div className="absolute top-1/4 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+                        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
                     </div>
                 </section>
 
