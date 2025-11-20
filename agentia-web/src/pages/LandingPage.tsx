@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Cpu, Wallet, Code, Globe, Database, GitPullRequest, Search } from 'lucide-react';
+import { Cpu, Wallet, GitPullRequest, Search } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
     const [lines, setLines] = useState<string[]>([]);

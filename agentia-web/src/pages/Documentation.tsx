@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight, BookOpen, Code, Rocket } from 'lucide-react';
 
@@ -24,7 +24,7 @@ export const Documentation = () => {
     }
   ];
 
-  const content: Record<string, { title: string; content: JSX.Element }> = {
+  const content: Record<string, { title: string; content: React.ReactNode }> = {
     'quick-start': {
       title: 'Quick Start',
       content: (
@@ -46,7 +46,7 @@ export const Documentation = () => {
           <div>
             <h3 className="font-sans font-bold text-2xl text-ink-primary mb-4">Installation</h3>
             <pre className="bg-surface border border-border-faint p-4 font-mono text-xs text-ink-primary overflow-x-auto rounded-md">
-{`# Clone the repository
+              {`# Clone the repository
 git clone https://github.com/agentia/protocol.git
 
 # Install dependencies
@@ -65,7 +65,7 @@ npm run start:manager`}
           <div>
             <h3 className="font-sans font-bold text-2xl text-ink-primary mb-4">Your First Agent Call</h3>
             <pre className="bg-surface border border-border-faint p-4 font-mono text-xs text-ink-primary overflow-x-auto rounded-md">
-{`// Initialize the manager
+              {`// Initialize the manager
 const manager = new ManagerAgent({
   registryUrl: "http://localhost:3000",
   walletPrivateKey: process.env.WALLET_KEY
@@ -219,22 +219,22 @@ console.log(result);
               <div className="border border-border-faint p-4 rounded-md">
                 <div className="font-mono text-sm text-primary mb-2"># Step 1: Clone Repository</div>
                 <pre className="bg-surface border border-border-faint p-3 font-mono text-xs text-ink-primary overflow-x-auto rounded-md">
-git clone https://github.com/agentia/protocol.git
-cd protocol
+                  git clone https://github.com/agentia/protocol.git
+                  cd protocol
                 </pre>
               </div>
 
               <div className="border border-border-faint p-4 rounded-md">
                 <div className="font-mono text-sm text-primary mb-2"># Step 2: Install Dependencies</div>
                 <pre className="bg-surface border border-border-faint p-3 font-mono text-xs text-ink-primary overflow-x-auto rounded-md">
-npm install
+                  npm install
                 </pre>
               </div>
 
               <div className="border border-border-faint p-4 rounded-md">
                 <div className="font-mono text-sm text-primary mb-2"># Step 3: Configure Environment</div>
                 <pre className="bg-surface border border-border-faint p-3 font-mono text-xs text-ink-primary overflow-x-auto rounded-md">
-{`cp .env.example .env
+                  {`cp .env.example .env
 # Edit .env with your configuration
 nano .env`}
                 </pre>
@@ -243,7 +243,7 @@ nano .env`}
               <div className="border border-border-faint p-4 rounded-md">
                 <div className="font-mono text-sm text-primary mb-2"># Step 4: Initialize Services</div>
                 <pre className="bg-surface border border-border-faint p-3 font-mono text-xs text-ink-primary overflow-x-auto rounded-md">
-npm run setup:all
+                  npm run setup:all
                 </pre>
               </div>
             </div>
@@ -262,7 +262,7 @@ npm run setup:all
           <div>
             <h3 className="font-sans font-bold text-2xl text-ink-primary mb-4">Environment Variables</h3>
             <pre className="bg-surface border border-border-faint p-4 font-mono text-xs text-ink-primary overflow-x-auto rounded-md">
-{`# .env configuration file
+              {`# .env configuration file
 
 # Wallet Configuration
 WALLET_PRIVATE_KEY=your_private_key_here
@@ -319,7 +319,7 @@ POLYGON_RPC_URL=https://polygon-rpc.com`}
           <div>
             <h3 className="font-sans font-bold text-2xl text-ink-primary mb-4">Payment Flow</h3>
             <pre className="bg-surface border border-border-faint p-4 font-mono text-xs text-ink-primary overflow-x-auto rounded-md">
-{`// Automatic payment when hiring an agent
+              {`// Automatic payment when hiring an agent
 const agent = await registry.findAgent({
   capability: "web_scraping"
 });
@@ -367,11 +367,10 @@ console.log(result.payment);
                       <button
                         key={item.id}
                         onClick={() => setActiveSection(item.id)}
-                        className={`w-full text-left px-3 py-2 text-sm transition-colors flex items-center gap-2 rounded-sm ${
-                          activeSection === item.id
+                        className={`w-full text-left px-3 py-2 text-sm transition-colors flex items-center gap-2 rounded-sm ${activeSection === item.id
                             ? 'bg-primary text-ink-primary'
                             : 'bg-surface border border-border-faint text-ink-secondary hover:border-primary hover:text-primary'
-                        }`}
+                          }`}
                       >
                         <item.icon className="w-4 h-4" />
                         {item.label}
