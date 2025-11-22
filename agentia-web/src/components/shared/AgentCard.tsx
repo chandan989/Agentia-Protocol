@@ -7,7 +7,6 @@ interface AgentCardProps {
     agent: Agent;
     onHire?: (agent: Agent) => void;
 }
-
 const getIcon = (type: Agent['type']) => {
     switch (type) {
         case 'web': return <Globe size={20} />;
@@ -47,7 +46,6 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onHire }) => {
                     <div className="text-xs text-agentia-grey">per call</div>
                 </div>
             </div>
-
             <div className="mb-4">
                 <div className="text-xs font-mono text-agentia-grey mb-2">CAPABILITIES_</div>
                 <ul className="space-y-1">
@@ -64,7 +62,6 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onHire }) => {
                     )}
                 </ul>
             </div>
-
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                 <div className="font-mono text-xs text-agentia-grey border border-gray-200 px-2 py-1 rounded-sm">
                     ID: {agent.id.slice(0, 6)}...{agent.id.slice(-4)}

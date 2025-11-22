@@ -1,0 +1,14 @@
+{
+  "name": "hedera-deploy",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "deploy": "node src/deploy.js"
+  },
+  "dependencies": {
+    "@hashgraph/sdk": "^2.38.0",
+    "dotenv": "^16.4.5",
+    "solc": "^0.8.20"
+  }
+}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Cpu, Wallet, GitPullRequest, Search } from 'lucide-react';
+import { useWallet } from '../context/WalletContext';
 
 export const LandingPage: React.FC = () => {
     const [lines, setLines] = useState<string[]>([]);
@@ -15,31 +16,23 @@ export const LandingPage: React.FC = () => {
         '<span class="text-ink-secondary">[10:42:31] EVM-MCP:</span> <span class="text-ink-primary">Payment 0.01 USDC sent. Tx: 0xabc...123</span>',
     ];
 
+    const { isConnected, connect } = useWallet();
+
     const [loadingText, setLoadingText] = useState('INITIALIZING CORE SYSTEMS...');
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const texts = [
-            'INITIALIZING CORE SYSTEMS...',
-            'CONNECTING TO AGENTIA MESH...',
-            'VERIFYING CRYPTOGRAPHIC PROOFS...',
-            'SYNCING AGENT REGISTRY...',
-            'ESTABLISHING SECURE UPLINK...'
-        ];
-        let i = 0;
-        const textInterval = setInterval(() => {
-            i = (i + 1) % texts.length;
-            setLoadingText(texts[i]);
-        }, 400);
-
-        const timer = setTimeout(() => {
-            clearInterval(textInterval);
+        const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+        const runSequence = async () => {
+            for (let i = 0; i < terminalLines.length; i++) {
+                setLines(prev => [...prev, terminalLines[i]]);
+                await delay(300);
+            }
+            setLoadingText('SYSTEMS OPERATIONAL');
+            await delay(500);
             setIsLoading(false);
-        }, 2500);
-        return () => {
-            clearTimeout(timer);
-            clearInterval(textInterval);
         };
+        runSequence();
     }, []);
 
     useEffect(() => {
@@ -96,7 +89,13 @@ export const LandingPage: React.FC = () => {
                                 <p className="mt-6 text-xl text-ink-secondary max-w-2xl mx-auto leading-relaxed">
                                     Agentia Protocol provides the foundational infrastructure for AI agents to Discover, Collaborate, and Transact in an open, permissionless network.
                                 </p>
-                                <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+                                <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                                    {!isConnected && (
+                                        <button onClick={connect} className="btn-primary">
+                                            <Wallet size={18} />
+                                            CONNECT WALLET
+                                        </button>
+                                    )}
                                     <Link to="/app" className="bg-primary text-ink-primary uppercase font-bold px-8 py-4 rounded-sm text-sm tracking-wide text-center hover:shadow-green-glow hover:scale-105 transition-all duration-200">
                                         [ START BUILDING ]
                                     </Link>

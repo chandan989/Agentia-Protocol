@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Shield, Zap, Globe, Database, FileText, Image, Code, Languages, Activity, CheckCircle, Clock, Copy } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import type { Agent } from '../types';
@@ -14,8 +14,17 @@ export const AgentDetail: React.FC = () => {
     if (!agent) {
         return (
             <div className="max-w-7xl mx-auto px-4 py-24 text-center">
+
                 <h2 className="text-2xl font-bold mb-4">Agent Not Found</h2>
-                <Link to="/registry" className="text-agentia-green hover:underline">Return to Registry</Link>
+
+                <button
+                    onClick={() => navigate('/registry')}
+
+                    className="text-agentia-green hover:underline"
+                >
+                    Return to Registry
+                </button>
+
             </div>
         );
     }
