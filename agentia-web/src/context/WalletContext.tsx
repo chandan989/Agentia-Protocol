@@ -47,7 +47,6 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
             }
 
             // Prefer HashPack extension if detected, otherwise fall back to QR modal
-            let session;
             const extensions = connectorRef.current.extensions || [];
             const hashpackExt = extensions.find((e) =>
                 e.available && (
@@ -57,9 +56,9 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
             );
 
             if (hashpackExt) {
-                session = await connectorRef.current.connectExtension(hashpackExt.id);
+                await connectorRef.current.connectExtension(hashpackExt.id);
             } else {
-                session = await connectorRef.current.openModal();
+                await connectorRef.current.openModal();
             }
 
             const signer = connectorRef.current.signers[0];
